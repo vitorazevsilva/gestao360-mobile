@@ -2,7 +2,7 @@ import { Link } from 'expo-router';
 import { useState } from 'react';
 import { Text, StyleSheet, View, TextInput, Switch, TouchableOpacity } from 'react-native';
 
-export default function Page() {
+export default function Signin() {
   const [form, setForm] = useState({
     email: '',
     password: '',
@@ -59,7 +59,7 @@ export default function Page() {
           </TouchableOpacity>
           <Text style={{ alignSelf: "center" }}>OU</Text>
           <TouchableOpacity style={styles.button} >
-            <Text>Entrar com Codigo Magico</Text>
+            <Text>Entrar sem Palavra-Passe</Text>
           </TouchableOpacity>
           <Link style={[styles.textLink, { alignSelf: "center" }]} href={{ pathname: "/auth/signup" }}>Quero começar a usar o Gestão 360</Link>
         </View>
@@ -129,5 +129,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
+    height: 40,
   }
 });
