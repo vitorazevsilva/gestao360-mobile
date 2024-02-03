@@ -1,6 +1,6 @@
 import { Link } from 'expo-router';
 import { useState } from 'react';
-import { Text, StyleSheet, View, TextInput, Switch, TouchableOpacity } from 'react-native';
+import { Text, StyleSheet, View, TextInput, Switch, TouchableOpacity, Platform, Dimensions } from 'react-native';
 
 export default function Signin() {
   const [form, setForm] = useState({
@@ -8,6 +8,7 @@ export default function Signin() {
     password: '',
     rememberMe: false
   })
+  const isShortScreen = Dimensions.get('window').width <= 365;
   return (
     <>
       <View style={styles.main}>
@@ -19,7 +20,6 @@ export default function Signin() {
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Email:</Text>
             <TextInput
-              onSubmitEditing={() => { this.secondTextInput.focus(); }}
               inputMode='email'
               returnKeyType="next"
               keyboardType='email-address'
@@ -32,7 +32,6 @@ export default function Signin() {
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Palavra-Passe:</Text>
             <TextInput
-              ref={(input) => { this.secondTextInput = input; }}
               placeholder='**********'
               secureTextEntry={true}
               style={styles.input}
@@ -41,18 +40,18 @@ export default function Signin() {
               onChangeText={(text) => setForm({ ...form, password: text })}
             />
           </View>
-          <View style={styles.formFooter}>
+          <View style={[styles.formFooter, { flexDirection: isShortScreen ? 'grid' : 'row', }]}>
             <View style={{ flexDirection: 'row' }}>
               <Switch
-                style={styles.switch}
+                style={Platform.select({ web: styles.switch, default: undefined })}
                 trackColor={{ false: '#767577', true: '#F7A224' }}
                 thumbColor={'#ff8329'}
                 value={form.rememberMe}
                 onValueChange={(value) => setForm({ ...form, rememberMe: value })}
               />
-              <Text style={{ color: '#495057', marginTop: 14, marginLeft: 5 }}>Memorizar-me</Text>
+              <Text style={{ color: '#495057', marginTop: 14 }}>Memorizar-me</Text>
             </View>
-            <Link style={styles.textLink} href={{ pathname: "/auth/recovery" }}>Esqueci-me a Palavra-Passe</Link>
+            <Link style={[styles.textLink, { marginTop: isShortScreen ? Platform.select({ web: 8, default: 0 }) : 13 }]} href={{ pathname: "/auth/recovery" }}>Esqueci-me a Palavra-Passe</Link>
           </View>
           <TouchableOpacity style={styles.button} >
             <Text>Entrar com Palavra-Passe</Text>
@@ -61,7 +60,7 @@ export default function Signin() {
           <TouchableOpacity style={styles.button} >
             <Text>Entrar sem Palavra-Passe</Text>
           </TouchableOpacity>
-          <Link style={[styles.textLink, { alignSelf: "center" }]} href={{ pathname: "/auth/signup" }}>Quero começar a usar o Gestão 360</Link>
+          <Link style={[styles.textLink, { alignSelf: "center" }]} href={{ pathname: "/auth/sign-up" }}>Quero começar a usar o Gestão 360</Link>
         </View>
       </View>
     </>
@@ -70,13 +69,16 @@ export default function Signin() {
 
 
 const styles = StyleSheet.create({
+
   main: {
     flex: 1,
     justifyContent: 'center',
     backgroundColor: '#f6f7fc',
+    alignItems: 'center',
   },
   container: {
     margin: 15,
+
   },
   title: {
     fontSize: 24,
@@ -113,10 +115,8 @@ const styles = StyleSheet.create({
     marginTop: 8,
     textDecorationLine: 'underline',
     color: '#495057',
-    marginTop: 13,
   },
   formFooter: {
-    flexDirection: 'row',
     justifyContent: 'space-between',
   },
   button: {
@@ -128,7 +128,10 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    width: '100%',
     height: 40,
-  }
+  },
+  switch: {
+    marginTop: 14,
+    marginRight: 10,
+  },
 });
