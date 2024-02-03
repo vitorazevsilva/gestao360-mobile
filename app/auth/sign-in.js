@@ -4,11 +4,10 @@ import { Text, StyleSheet, View, TextInput, Switch, TouchableOpacity, Platform, 
 
 export default function Signin() {
   const [form, setForm] = useState({
-    email: '',
+    email: Platform.select({ web: 500, default: '100%' }),
     password: '',
     rememberMe: false
   })
-  const isShortScreen = Dimensions.get('window').width <= 365;
   return (
     <>
       <View style={styles.main}>
@@ -32,6 +31,7 @@ export default function Signin() {
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Palavra-Passe:</Text>
             <TextInput
+              inputMode='text'
               placeholder='**********'
               secureTextEntry={true}
               style={styles.input}
@@ -40,7 +40,7 @@ export default function Signin() {
               onChangeText={(text) => setForm({ ...form, password: text })}
             />
           </View>
-          <View style={[styles.formFooter, { flexDirection: isShortScreen ? 'grid' : 'row', }]}>
+          <View style={styles.formFooter}>
             <View style={{ flexDirection: 'row' }}>
               <Switch
                 style={Platform.select({ web: styles.switch, default: undefined })}
@@ -51,7 +51,7 @@ export default function Signin() {
               />
               <Text style={{ color: '#495057', marginTop: 14 }}>Memorizar-me</Text>
             </View>
-            <Link style={[styles.textLink, { marginTop: isShortScreen ? Platform.select({ web: 8, default: 0 }) : 13 }]} href={{ pathname: "/auth/recovery" }}>Esqueci-me a Palavra-Passe</Link>
+            <Link style={[styles.textLink, { marginTop: Dimensions.get('window').width <= 365 ? Platform.select({ web: 8, default: 0 }) : 13 }]} href={{ pathname: "/auth/recovery" }}>Esqueci-me a Palavra-Passe</Link>
           </View>
           <TouchableOpacity style={styles.button} >
             <Text>Entrar com Palavra-Passe</Text>
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
   },
   container: {
     margin: 15,
-
+    width: Dimensions.get('window').width >= 500 ? Platform.select({ web: 500, default: undefined }) : undefined,
   },
   title: {
     fontSize: 24,
@@ -118,6 +118,7 @@ const styles = StyleSheet.create({
   },
   formFooter: {
     justifyContent: 'space-between',
+    flexDirection: Dimensions.get('window').width <= 365 ? 'grid' : 'row'
   },
   button: {
     backgroundColor: '#ff8329',
