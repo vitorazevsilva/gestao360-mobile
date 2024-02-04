@@ -4,7 +4,7 @@ import { Text, StyleSheet, View, TextInput, Switch, TouchableOpacity, Platform, 
 
 export default function Signin() {
   const [form, setForm] = useState({
-    email: Platform.select({ web: 500, default: '100%' }),
+    email: '',
     password: '',
     rememberMe: false
   })
@@ -54,11 +54,11 @@ export default function Signin() {
             <Link style={[styles.textLink, { marginTop: Dimensions.get('window').width <= 365 ? Platform.select({ web: 8, default: 0 }) : 13 }]} href={{ pathname: "/auth/recovery" }}>Esqueci-me a Palavra-Passe</Link>
           </View>
           <TouchableOpacity style={styles.button} >
-            <Text>Entrar com Palavra-Passe</Text>
+            <Text style={styles.buttonText}>Entrar com Palavra-Passe</Text>
           </TouchableOpacity>
           <Text style={{ alignSelf: "center" }}>OU</Text>
           <TouchableOpacity style={styles.button} >
-            <Text>Entrar sem Palavra-Passe</Text>
+            <Text style={styles.buttonText}>Entrar sem Palavra-Passe</Text>
           </TouchableOpacity>
           <Link style={[styles.textLink, { alignSelf: "center" }]} href={{ pathname: "/auth/sign-up" }}>Quero começar a usar o Gestão 360</Link>
         </View>
@@ -135,4 +135,8 @@ const styles = StyleSheet.create({
     marginTop: 14,
     marginRight: 10,
   },
+  buttonText: {
+    color: '#fff',
+    fontSize: 15,
+  }
 });

@@ -35,9 +35,67 @@ export default function Signup() {
           </Text>
           <Text style={styles.subtitle}>Podes te registar aqui caso sejas o responsavel pela empresa, caso contrario deves pedir ao responsavel para te adicionar á empresa</Text>
           {status === 'personal' && <PersonalForm data={[setForm, form]} status={[setStatus, status]} />}
+          {status === 'enterprise' && <EnterpriseForm data={[setForm, form]} status={[setStatus, status]} />}
           <Link style={[styles.textLink, { alignSelf: "center" }]} href={{ pathname: "/auth/sign-in" }}>Já tenho conta, quero entrar no Gestão 360</Link>
         </View>
       </View>
+    </>
+  );
+}
+
+const EnterpriseForm = ({ data: [setData, getData], status: [setStatus] }) => {
+
+  return (
+    <>
+      <Text style={styles.formTitle}>Informações da Empresa</Text>
+      <View style={styles.inputContainer}>
+        <Text style={styles.label}>Nome:</Text>
+        <TextInput
+          autoComplete='name'
+          inputMode='text'
+          returnKeyType="next"
+          keyboardType='default'
+          placeholder='Empresa Lda. ...'
+          style={styles.input}
+          value={getData.personal.name}
+          onChangeText={(text) => setData({ ...getData, personal: { ...getData.personal, name: text } })}
+        />
+      </View>
+      <View style={styles.inputContainer}>
+        <Text style={styles.label}>Email Geral:</Text>
+        <TextInput
+          autoComplete='email'
+          inputMode='email'
+          returnKeyType="next"
+          keyboardType='email-address'
+          placeholder='geral@empresa.com'
+          style={styles.input}
+          value={getData.personal.email}
+          onChangeText={(text) => setData({ ...getData, personal: { ...getData.personal, email: text } })}
+        />
+      </View>
+      <View style={styles.inputContainer}>
+        <Text style={styles.label}>NIPC:</Text>
+        <TextInput
+          inputMode='numeric'
+          returnKeyType="next"
+          keyboardType='number-pad'
+          placeholder='512345678'
+          maxLength={9}
+          style={styles.input}
+          value={getData.personal.password}
+          onChangeText={(text) => setData({ ...getData, personal: { ...getData.personal, password: text } })}
+        />
+      </View>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <TouchableOpacity style={[styles.button, { width: "49%", backgroundColor: '#fff', borderColor: '#ff8329', borderWidth: 3, padding: 0 }]} onPress={() => setStatus('personal')}>
+          <Text style={{ color: '#ff8329' }}>Voltar</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.button, { width: "49%" }]} onPress={() => setStatus('address')}>
+          <Text style={styles.buttonText}>Continuar</Text>
+        </TouchableOpacity>
+      </View>
+
     </>
   );
 }
@@ -46,6 +104,7 @@ const PersonalForm = ({ data: [setData, getData], status: [setStatus] }) => {
 
   return (
     <>
+      <Text style={styles.formTitle}>Informações Pessoais</Text>
       <View style={styles.inputContainer}>
         <Text style={styles.label}>Nome Completo:</Text>
         <TextInput
@@ -101,7 +160,7 @@ const PersonalForm = ({ data: [setData, getData], status: [setStatus] }) => {
         />
       </View>
       <TouchableOpacity style={styles.button} onPress={() => setStatus('enterprise')}>
-        <Text>Continuar</Text>
+        <Text style={styles.buttonText} >Continuar</Text>
       </TouchableOpacity>
     </>
   );
@@ -167,4 +226,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     height: 40,
   },
+  formTitle: {
+    fontSize: 17,
+    fontWeight: 'bold',
+    marginTop: 10,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 15,
+  }
 });
